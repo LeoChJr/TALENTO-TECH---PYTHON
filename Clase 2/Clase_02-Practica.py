@@ -1,0 +1,5 @@
+nombre = input("Ingrese su nombre:")
+apellido = input("Ingrese su apellido:")
+edad = input("Ingrese su edad:")
+correo = input("Ingrese su correo electronico:")
+print("Nombre:\t",nombre,"\nApellido:",apellido,"\nEdad:\t",edad,"\nCorreo:\t",correo)
