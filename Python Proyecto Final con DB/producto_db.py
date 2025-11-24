@@ -1,5 +1,4 @@
 import sqlite3
-import colorama
 from colorama import Fore, Style
 
 
@@ -8,9 +7,11 @@ def conectar():
         return sqlite3.connect("inventario.db")
     except:
         return None
+
 def crear_tabla(conexion):
     cursor = conexion.cursor()
-    cursor.execute('''
+    cursor.execute(
+        '''
         CREATE TABLE IF NOT EXISTS inventario (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
@@ -21,12 +22,13 @@ def crear_tabla(conexion):
         )
         ''')
     conexion.commit()
+
 def cerrar_conexion(conexion):
     try:
         if conexion:
             conexion.close()
     except sqlite3.Error as e:
-        print("❌ Error al cerrar:", e)
+        print("Error al cerrar:", e)
 
 def agregar_productos(conexion,nombre,descripcion,cantidad,precio,categoria):
     
@@ -38,11 +40,10 @@ def agregar_productos(conexion,nombre,descripcion,cantidad,precio,categoria):
                 '''
         cursor.execute(query, (nombre,descripcion,cantidad, precio, categoria))
         conexion.commit()
-        print(f"Producto '{nombre}' agregado con éxito.")
+        print(f"Producto '{nombre}' agregado")
     except sqlite3.Error as e:
         print(f"Error al agregar el producto: {e}")
         conexion.rollback()
-    
         
 def mostrar_productos(conexion):
     try:
@@ -59,17 +60,15 @@ def buscar_productos(conexion, idProducto):
         return cursor.fetchall()
     except sqlite3.Error as e:
         print(f"Error al buscar el producto: {e}")
-    
-       
+         
 def actualizar_productos(conexion,id, nombre,descripcion,cantidad, precio,categoria):
-    
     try:
         cursor = conexion.cursor()
         query = '''
                 UPDATE inventario
                 SET nombre = ?, descripcion = ?, cantidad = ?, precio = ?, categoria = ?
                 WHERE id = ?
-        '''
+                '''
         cursor.execute(query,(nombre, descripcion, cantidad, precio, categoria, id))
         conexion.commit()
         return cursor.rowcount
@@ -85,19 +84,18 @@ def eliminar_productos(conexion,id_producto):
                 '''
         cursor.execute(query,(id_producto,))
         conexion.commit()
-        return cursor.rowcount >0
+        return cursor.rowcount > 0
     except sqlite3.Error as e:
         print(f"Error al eliminar el producto: {e}")
-        conexion.rollback()
-        
+        conexion.rollback()        
 
-def reportes_bajo_stock(conexion, umbral):
+def reportes_bajo_stock(conexion, limite):
     try:
         cursor = conexion.cursor()
         query = '''
                 SELECT * FROM inventario WHERE cantidad < ?
                 '''
-        cursor.execute(query, (umbral,))
+        cursor.execute(query, (limite,))
         return cursor.fetchall()
     except sqlite3.Error as e:
         print(f"Error al generar el reporte de bajo stock: {e}")

@@ -1,7 +1,6 @@
 from producto_db import *
-RESET = "\033[0m"     
-AMARILLO = "\033[33m"
-ANCHO = 80
+
+ANCHO = 100
 
 def validar_numero(numero):
     while not numero.isdigit():
@@ -9,13 +8,14 @@ def validar_numero(numero):
     return int(numero)
 
 def validar_texto(texto):
-    while texto.strip() == "":
-        print("No puede estar vacio ")
+    while texto == "" or texto.isdigit() :
+        print("No puede estar vacio o ser un numero.")
         texto = input("Reingrese: ").strip()
     return texto
 
 def agregar_producto(conexion):
-    print(f"{AMARILLO} { 'Agregar PRODUCTOS'.upper().center(ANCHO) } {RESET}")
+    print("-" * ANCHO)
+    print(f"{Fore.YELLOW + 'Agregar PRODUCTOS'.upper().center(ANCHO)}")
     print("-" * ANCHO)
     nombre_producto = validar_texto(input("Ingrese el nombre del producto: ").strip().title())
     descripcion_producto = validar_texto(input("Ingrese la descripcion del producto: ").strip().title())
@@ -24,35 +24,40 @@ def agregar_producto(conexion):
     categoria_producto = validar_texto(input("Ingrese la categoria del producto: ").strip().title())
     
     agregar_productos(conexion,nombre_producto, descripcion_producto, cantidad_producto, precio_producto, categoria_producto)
-    print(f"{AMARILLO}Producto '{nombre_producto}' agregado {RESET}" )
-    
+    print(Fore.CYAN + f"Producto '{nombre_producto}' agregado " )
     
 def mostrar_producto(conexion):
     productos = mostrar_productos(conexion)
     if not productos:
         print("No hay productos para mostrar".center(ANCHO))
         return
-    
-    print ("Lista de productos:")
+    print("-" * ANCHO)
+    print (Fore.YELLOW + "Lista de productos:".upper().center(ANCHO))
+    print("-" * ANCHO)
     for producto in productos:
-            print(f"ID: {producto[0]}, Nombre: {producto[1]}, Descripcion: {producto[2]}, Cantidad: {producto[3]}, Precio:{producto[4]}, Categoria:{producto[5]}")
+        print(f"ID: {producto[0]} - Nombre: {producto[1]} - Descripcion: {producto[2]} - Cantidad: {producto[3]} - Precio $:{producto[4]} - Categoria:{producto[5]}\n")
 
 def buscar_producto(conexion):
-    print(f"{AMARILLO} { 'buscar PRODUCTOS'.upper().center(ANCHO) } {RESET}")
+    print("-" * ANCHO)
+    print(f"{Fore.YELLOW + 'buscar PRODUCTOS'.upper().center(ANCHO)}")
     print("-" * ANCHO)
     
     busqueda_producto = validar_numero(input("Ingrese el ID del producto a buscar: ").strip())
     encontrados = buscar_productos(conexion, busqueda_producto)
     
     if not encontrados:
-        print(f"No se encontraron productos con el id '{busqueda_producto}'.")
+        print(f"No se encontraron productos con el ID '{busqueda_producto}'")
     else:
-        print(f"{len(encontrados)} producto(s) encontrado(s) :")
+        print(Fore.YELLOW + f"{len(encontrados)} producto(s) encontrado(s) :".upper().center(ANCHO))
         for p in encontrados:
-            print(f"ID {p[0]} - Nombre: {p[1]}, Descripcion: {p[2]}, Cantidad: {p[3]}, Precio $: {p[4]} Categoria: {p[5]})")
-
+            print(f"ID {p[0]} - Nombre: {p[1]}, Descripcion: {p[2]}, Cantidad: {p[3]}, Precio $: {p[4]} Categoria: {p[5]} \n")
 
 def actualizar_producto(conexion):
+    print("-" * ANCHO)
+    mostrar_producto(conexion)
+    print("-" * ANCHO)
+    print(f"{Fore.YELLOW + 'Actualizar PRODUCTOS'.upper().center(ANCHO)}")
+    print("-" * ANCHO)
     id_producto = validar_numero(input("Ingrese el ID del producto a actualizar: ").strip())
     nombre_producto = validar_texto(input("Ingrese el nuevo nombre del producto: ").strip().title())
     descripcion_producto = validar_texto(input("Ingrese la nueva descripcion del producto: ").strip().title())
@@ -61,23 +66,28 @@ def actualizar_producto(conexion):
     categoria_producto = validar_texto(input("Ingrese la nueva categoria del producto: ").strip().title())  
     
     actualizar_productos(conexion,id_producto, nombre_producto, descripcion_producto, cantidad_producto, precio_producto, categoria_producto)
-    print(f"{AMARILLO}Producto con ID '{id_producto}' actualizado con éxito. {RESET}" )
+    print(Fore.CYAN + f"Producto con ID '{id_producto}' actualizado" )
     
 def eliminar_producto(conexion):
+    print("-" * ANCHO)
+    mostrar_producto(conexion)
+    print("-" * ANCHO)
+    print(f"{Fore.YELLOW + 'Eliminar PRODUCTOS'.upper().center(ANCHO)}")
+    print("-" * ANCHO)
     id = validar_numero(input("Ingrese el ID del producto a eliminar: "))
     if eliminar_productos(conexion, id):
-        print(f"{AMARILLO}Producto con ID '{id}' eliminado con éxito. {RESET}" )
+        print(Fore.CYAN + f"Producto ID '{id}' eliminado" )
     else:
-        print(f"{AMARILLO}No se encontró ningún producto con ID '{id}'. {RESET}" )
-
+        print(f"No se encontro ningun producto con ID '{id}'" )
 
 def reporte_bajo_stock(conexion):
-    umbral = validar_numero(input("Ingrese el umbral de stock: "))
-    productos_bajo_stock = reportes_bajo_stock(conexion, umbral)
+    limite = validar_numero(input("Ingrese el limite de stock: "))
+    productos_bajo_stock = reportes_bajo_stock(conexion, limite)
     
     if not productos_bajo_stock:
-        print(f"No hay productos con stock menor a {umbral}.")
+        print(f"No hay productos con stock menor a {limite}.")
     else:
-        print(f"Productos con stock menor a {umbral}:")
+        print("-" * ANCHO)
+        print(Fore.CYAN + f"Productos con stock menor a {limite}:".upper().center(ANCHO))
         for producto in productos_bajo_stock:
-            print(f"ID: {producto[0]}, Nombre: {producto[1]}, Cantidad: {producto[3]}")   
+            print(f"ID: {producto[0]} - Nombre: {producto[1]} - Cantidad: {producto[3]} \n")   
