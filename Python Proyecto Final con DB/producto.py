@@ -48,7 +48,9 @@ def buscar_producto(conexion):
     if not encontrados:
         print(f"No se encontraron productos con el ID '{busqueda_producto}'")
     else:
+        print("-" * ANCHO)
         print(Fore.YELLOW + f"{len(encontrados)} producto(s) encontrado(s) :".upper().center(ANCHO))
+        print("-" * ANCHO)
         for p in encontrados:
             print(f"ID {p[0]} - Nombre: {p[1]}, Descripcion: {p[2]}, Cantidad: {p[3]}, Precio $: {p[4]} Categoria: {p[5]} \n")
 
@@ -86,8 +88,10 @@ def reporte_bajo_stock(conexion):
     
     if not productos_bajo_stock:
         print(f"No hay productos con stock menor a {limite}.")
+        print("-" * ANCHO)
     else:
         print("-" * ANCHO)
         print(Fore.CYAN + f"Productos con stock menor a {limite}:".upper().center(ANCHO))
+        print("-" * ANCHO)
         for producto in productos_bajo_stock:
             print(f"ID: {producto[0]} - Nombre: {producto[1]} - Cantidad: {producto[3]} \n")   

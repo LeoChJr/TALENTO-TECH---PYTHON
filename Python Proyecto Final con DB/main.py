@@ -11,8 +11,8 @@ def menu():
     print(f"{Fore.GREEN + 'Gestion de Inventario'.upper().center(ANCHO)}") 
     print("=" * ANCHO)
 
-    print("".ljust(10) + "1. Agregar producto".ljust(25) + "2. Mostrar producto".ljust(25) + "3. Buscar producto".ljust(20))
-    print("".ljust(10) + "4. Actualizar producto".ljust(24) + " 5. Eliminar producto".ljust(25) + " 6. Reporte bajo Stock".ljust(20))
+    print("".ljust(10) + "1.➕ Agregar producto".ljust(25) + "2.📋 Mostrar producto".ljust(25) + "3.🔍 Buscar producto".ljust(20))
+    print("".ljust(10) + "4.🔃 Actualizar producto".ljust(24) + " 5.❌ Eliminar producto".ljust(25) + "6. ⚠ Reporte bajo Stock".ljust(20))
     print("".ljust(10) + "7. Salir".ljust(20))
     print("=" * ANCHO)
     
