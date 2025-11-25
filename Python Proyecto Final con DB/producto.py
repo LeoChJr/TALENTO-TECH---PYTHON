@@ -1,18 +1,22 @@
-from producto_db import *
+from producto_db import * #importa las funciones de producto_db.py
+from colorama import Fore, Style #libreria para colores en la terminal
 
 ANCHO = 100
 
+#revisa que el valor ingresado sea un numero
 def validar_numero(numero):
     while not numero.isdigit():
         numero = input("El valor debe ser un numero. Ingrese el valor: ").strip()
     return int(numero)
 
+#revisa que el texto no este vacio o sea un numero
 def validar_texto(texto):
     while texto == "" or texto.isdigit() :
         print("No puede estar vacio o ser un numero.")
         texto = input("Reingrese: ").strip()
     return texto
 
+#funcion para agregar productos
 def agregar_producto(conexion):
     print("-" * ANCHO)
     print(f"{Fore.YELLOW + 'Agregar PRODUCTOS'.upper().center(ANCHO)}")
@@ -25,7 +29,8 @@ def agregar_producto(conexion):
     
     agregar_productos(conexion,nombre_producto, descripcion_producto, cantidad_producto, precio_producto, categoria_producto)
     print(Fore.CYAN + f"Producto '{nombre_producto}' agregado " )
-    
+
+#funcion para mostrar productos
 def mostrar_producto(conexion):
     productos = mostrar_productos(conexion)
     if not productos:
@@ -37,6 +42,7 @@ def mostrar_producto(conexion):
     for producto in productos:
         print(f"ID: {producto[0]} - Nombre: {producto[1]} - Descripcion: {producto[2]} - Cantidad: {producto[3]} - Precio $:{producto[4]} - Categoria:{producto[5]}\n")
 
+#funcion para buscar productos por id
 def buscar_producto(conexion):
     print("-" * ANCHO)
     print(f"{Fore.YELLOW + 'buscar PRODUCTOS'.upper().center(ANCHO)}")
@@ -54,6 +60,7 @@ def buscar_producto(conexion):
         for p in encontrados:
             print(f"ID {p[0]} - Nombre: {p[1]}, Descripcion: {p[2]}, Cantidad: {p[3]}, Precio $: {p[4]} Categoria: {p[5]} \n")
 
+#funcion para actualizar productos por id
 def actualizar_producto(conexion):
     print("-" * ANCHO)
     mostrar_producto(conexion)
@@ -69,7 +76,8 @@ def actualizar_producto(conexion):
     
     actualizar_productos(conexion,id_producto, nombre_producto, descripcion_producto, cantidad_producto, precio_producto, categoria_producto)
     print(Fore.CYAN + f"Producto con ID '{id_producto}' actualizado" )
-    
+   
+#funcion para eliminar productos por id 
 def eliminar_producto(conexion):
     print("-" * ANCHO)
     mostrar_producto(conexion)
@@ -82,6 +90,7 @@ def eliminar_producto(conexion):
     else:
         print(f"No se encontro ningun producto con ID '{id}'" )
 
+#funcion para generar reporte de productos con bajo stocks
 def reporte_bajo_stock(conexion):
     limite = validar_numero(input("Ingrese el limite de stock: "))
     productos_bajo_stock = reportes_bajo_stock(conexion, limite)

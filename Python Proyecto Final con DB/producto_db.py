@@ -1,13 +1,14 @@
-import sqlite3
-from colorama import Fore, Style
+import sqlite3 #importa la libreria sqlite3 para manejar bases de datos
 
 
+#conexion a la base de datos
 def conectar():
     try:
         return sqlite3.connect("inventario.db")
     except:
         return None
 
+#crear la tabla inventario si no existe
 def crear_tabla(conexion):
     cursor = conexion.cursor()
     cursor.execute(
@@ -23,6 +24,7 @@ def crear_tabla(conexion):
         ''')
     conexion.commit()
 
+#cerrar la conexion a la base de datos
 def cerrar_conexion(conexion):
     try:
         if conexion:
@@ -30,6 +32,7 @@ def cerrar_conexion(conexion):
     except sqlite3.Error as e:
         print("Error al cerrar:", e)
 
+#agrega un nuevo producto a la base de datos por parametros
 def agregar_productos(conexion,nombre,descripcion,cantidad,precio,categoria):
     
     cursor = conexion.cursor()
@@ -45,6 +48,7 @@ def agregar_productos(conexion,nombre,descripcion,cantidad,precio,categoria):
         print(f"Error al agregar el producto: {e}")
         conexion.rollback()
         
+#obtiene todos los productos de la base de datos
 def mostrar_productos(conexion):
     try:
         cursor = conexion.cursor()
@@ -52,7 +56,8 @@ def mostrar_productos(conexion):
         return cursor.fetchall()
     except sqlite3.Error as e:
         print(f"Error al obtener los productos: {e}")
-            
+
+#busca productos por id en la base de datos            
 def buscar_productos(conexion, idProducto):
     try:
         cursor = conexion.cursor()
@@ -60,7 +65,8 @@ def buscar_productos(conexion, idProducto):
         return cursor.fetchall()
     except sqlite3.Error as e:
         print(f"Error al buscar el producto: {e}")
-         
+  
+#actualiza productos por id en la base de datos mediante parametros         
 def actualizar_productos(conexion,id, nombre,descripcion,cantidad, precio,categoria):
     try:
         cursor = conexion.cursor()
@@ -76,6 +82,7 @@ def actualizar_productos(conexion,id, nombre,descripcion,cantidad, precio,catego
         print(f"Error al actualizar el producto: {e}")
         conexion.rollback()
 
+#elimina productos por id en la base de datos 
 def eliminar_productos(conexion,id_producto):
     try: 
         cursor = conexion.cursor()
@@ -89,6 +96,7 @@ def eliminar_productos(conexion,id_producto):
         print(f"Error al eliminar el producto: {e}")
         conexion.rollback()        
 
+#genera un reporte de productos con bajo stock de la base de datos
 def reportes_bajo_stock(conexion, limite):
     try:
         cursor = conexion.cursor()
